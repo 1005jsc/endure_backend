@@ -5,6 +5,8 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 
 import clickNumRouter from './router/clickNum.js';
+import { config } from './config.js';
+import { db } from './db/database.js';
 
 const app = express();
 
@@ -25,4 +27,7 @@ app.use((error, req, res, next) => {
   res.sendStatus(500);
 });
 
-app.listen(8080);
+// db에 연결이 되면 console.log에 출력이 되도록 한번 만들어 보자
+db.getConnection().then(console.log);
+
+const server = app.listen(config.host.port);
