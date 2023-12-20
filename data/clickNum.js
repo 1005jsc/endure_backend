@@ -6,3 +6,8 @@ export const incrementClickNum = async () => {
   clickNum += 1;
   return clickNum;
 };
+
+export const resetClickNum = async () => {
+  clickNum = 0;
+  return clickNum;
+};
