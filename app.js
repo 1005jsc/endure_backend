@@ -28,6 +28,7 @@ app.use((error, req, res, next) => {
 });
 
 // db에 연결이 되면 console.log에 출력이 되도록 한번 만들어 보자
-db.getConnection().then(console.log);
+db.getConnection(); //
+// .then(console.log);
 
 const server = app.listen(config.host.port);

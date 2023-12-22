@@ -11,4 +11,7 @@ router.get('/', ClickNumController.getClickNum);
 // 클릭 횟수 수정
 router.put('/', ClickNumController.incrementClickNum);
 
+// 클릭 횟수 리셋
+router.get('/reset', ClickNumController.resetClickNum);
+
 export default router;

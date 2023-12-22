@@ -55,3 +55,8 @@ export const incrementClickNum = async (req, res, next) => {
 
   res.status(200).json(`클릭 수 올라감. 현재 클릭 수: ${incrementedNum}`);
 };
+
+export const resetClickNum = async (req, res, next) => {
+  await ClickNumRepository.resetClickNum();
+  res.status(200).json(`리셋 다 됨. 현재 클릭 수: 0`);
+};
