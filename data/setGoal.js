@@ -31,3 +31,11 @@ export const setGoal = async (goal) => {
 // export const resetClickNum = async () => {
 //   return db.execute(`UPDATE clickNum SET clickNum=${0} WHERE id=1`);
 // };
+
+export const clearGoal = async () => {
+  await db.execute(`UPDATE goal SET goal='' WHERE id=1`);
+  const yes = await db
+    .execute('SELECT goal FROM goal')
+    .then((value) => value[0][0]);
+  return yes.goal;
+};

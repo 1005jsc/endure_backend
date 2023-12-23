@@ -5,13 +5,13 @@ import * as SetGoalController from '../controller/setGoal.js';
 
 const router = express.Router();
 
-// 클릭 횟수 get
+// 목표 get
 router.get('/', SetGoalController.getGoal);
 
-// 클릭 횟수 수정
+// 목표 설정하기
 router.put('/', SetGoalController.setGoal);
 
-// 클릭 횟수 리셋
-// router.get('/reset', SetGoalController.resetClickNum);
+// 목표 완료하기
+router.post('/done', SetGoalController.clearGoal);
 
 export default router;
