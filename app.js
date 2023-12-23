@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 
 import clickNumRouter from './router/clickNum.js';
+import setGoalRouter from './router/setGoal.js';
 import { config } from './config.js';
 import { db } from './db/database.js';
 
@@ -16,6 +17,8 @@ app.use(cors());
 app.use(morgan('tiny'));
 
 app.use('/clickNum', clickNumRouter);
+
+app.use('/goal', setGoalRouter);
 
 app.use((req, res, next) => {
   console.log(req);
