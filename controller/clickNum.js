@@ -36,6 +36,7 @@ export const getClickNum = async (req, res, next) => {
   } else {
     await ClickNumRepository.resetClickNum();
     currentNum = 0;
+    message = `자, 참을인 누른횟수가 0번이구먼, 새 출발을 시작하소`;
   }
 
   const returnValues = {
