@@ -1,11 +1,13 @@
 import { db } from '../db/database.js';
 
 export const getGoal = async () => {
-  return db.execute('SELECT goal FROM goal').then((value) => {
-    console.log(value);
+  return db
+    .execute('SELECT id, goalName, date, progress, endureNum FROM goal')
+    .then((value) => {
+      console.log(value);
 
-    return value[0][0];
-  });
+      return value[0][0];
+    });
 };
 
 export const setGoal = async (goal) => {
