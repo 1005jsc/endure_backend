@@ -1,12 +1,13 @@
 import { db } from '../db/database.js';
+import { convertJsDateToMysqlDatetime } from '../util/date/date.js';
 
-// SELECT id, goalName, date, progress, endureNum FROM goal
+// SELECT id, goalName, createdDate, done, endureNum FROM goal
 
 export const getGoal = async () => {
   // 가장 최신의 goal이 보이게끔 만들기
 
   return db
-    .execute('SELECT * FROM goal ORDER BY date DESC LIMIT 1;')
+    .execute('SELECT * FROM goal ORDER BY createdDate DESC LIMIT 1;')
 
     .then((value) => {
       return value[0][0];
@@ -63,12 +64,20 @@ export const addOneEndureNum = async (id) => {
     );
 };
 
-export const submitFinishedGoal = async (goal) => {
-  // goalName, date, progress, endureNum 받아오기
+export const setDone = async (id, doneDate) => {
+  await db.execute(`UPDATE goal SET done=1 WHERE id=?`, [id]);
+  return await db.execute(`UPDATE goal SET doneDate=? WHERE id=?`, [
+    doneDate,
+    id,
+  ]);
+};
+
+export const submitNewGoal = async () => {
+  // goalName, createdDate, done, endureNum 받아오기
 
   await db.execute(
-    `INSERT INTO goal (goalName, date, progress, endureNum) VALUES(?,?,?,?)`,
-    [goal?.goalName, goal?.date, goal?.progress, goal?.endureNum]
+    `INSERT INTO goal (goalName, createdDate, done, endureNum) VALUES(?,?,?,?)`,
+    [null, convertJsDateToMysqlDatetime(), 0, 0]
   );
   const yes = await db.execute('SELECT * FROM goal').then((value) => value[0]);
   return yes;

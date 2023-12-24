@@ -36,10 +36,15 @@ export const setGoal = async (req, res, next) => {
   return;
 };
 
-// 참을인 횟수 올리기
+// 참을인 횟수 올리기(완료)
 export const addOneNum = async (req, res, next) => {
   if (!req.body.id) {
     res.status(400).json(`목표 설정하기 실패: id가 없음`);
+    return;
+  }
+  const currentGoalList = await SetGoalRepository.getGoalList();
+  if (currentGoalList.find((value) => value.id === req.body.id).done !== 0) {
+    res.status(400).json(`이미 완료된 id입니다`);
     return;
   }
 
@@ -50,9 +55,35 @@ export const addOneNum = async (req, res, next) => {
 };
 // 목표 완료리스트에 추가하기
 export const finishGoal = async (req, res, next) => {
-  const goalNow = await SetGoalRepository.submitFinishedGoal(req.body);
+  // 추가해야할 값이 없을떄
+  if (!req.body.id || !req.body?.doneDate) {
+    res.status(400).json(`request로 보내는 값의 양식을 확인하시오`);
+    return;
+  }
 
-  res.status(200).json(goalNow);
+  const currentGoalList = await SetGoalRepository.getGoalList();
+  if (!currentGoalList.map((value) => value.id).includes(req.body?.id)) {
+    res.status(400).json(`존재하지 않는 id입니다`);
+    return;
+  }
+
+  if (currentGoalList.find((value) => value.id === req.body.id).done !== 0) {
+    res.status(400).json(`id ${req.body.id}는 이미 완료된 목표입니다`);
+    return;
+  }
+
+  // 이미 완료된 id라면 등록하지 않기
+
+  // 목표 완료 표시하기
+
+  await SetGoalRepository.setDone(req.body?.id, req.body?.doneDate);
+
+  // 새 목표 리스트에 집어 넣기
+
+  await SetGoalRepository.submitNewGoal(req.body);
+
+  res.status(200).json(`목표 완료!, 그리고 새 목표 생성 `);
+  // res.status(200).json(goalNow);
 };
 
 // 목표리스트 get(완료)
