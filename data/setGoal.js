@@ -53,7 +53,17 @@ export const setGoal = async ({ id, goalName }) => {
 
 // 목표완료하기, 완료리스트에 추가하기
 
-export const finishGoal = async (goal) => {
+export const addOneEndureNum = async (id) => {
+  return db
+    .execute(`UPDATE goal SET endureNum=endureNum+1 WHERE id=?`, [id])
+    .then(() =>
+      db
+        .execute('SELECT id, endureNum FROM goal WHERE id=?', [id])
+        .then((value) => value[0][0])
+    );
+};
+
+export const submitFinishedGoal = async (goal) => {
   // goalName, date, progress, endureNum 받아오기
 
   await db.execute(

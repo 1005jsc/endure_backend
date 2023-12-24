@@ -7,7 +7,7 @@ export const getGoal = async (req, res, next) => {
   res.status(200).json(currentGoal || {});
 };
 
-// 목표 설정하기
+// 목표 설정하기 (완료)
 
 export const setGoal = async (req, res, next) => {
   if (!req.body.id || !req.body?.goalName) {
@@ -38,11 +38,19 @@ export const setGoal = async (req, res, next) => {
 
 // 참을인 횟수 올리기
 export const addOneNum = async (req, res, next) => {
-  res.status(200).json(`목표 선택하기~~ `);
+  if (!req.body.id) {
+    res.status(400).json(`목표 설정하기 실패: id가 없음`);
+    return;
+  }
+
+  const yo = await SetGoalRepository.addOneEndureNum(req.body?.id);
+
+  res.status(200).json(yo);
+  return;
 };
 // 목표 완료리스트에 추가하기
 export const finishGoal = async (req, res, next) => {
-  const goalNow = await SetGoalRepository.finishGoal(req.body);
+  const goalNow = await SetGoalRepository.submitFinishedGoal(req.body);
 
   res.status(200).json(goalNow);
 };

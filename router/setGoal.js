@@ -12,7 +12,7 @@ router.get('/', SetGoalController.getGoal);
 router.patch('/name', SetGoalController.setGoal);
 
 // 참을인 횟수 올리기
-router.put('/endureNum', SetGoalController.addOneNum);
+router.patch('/endureNum', SetGoalController.addOneNum);
 
 // 목표 완료하기
 router.post('/done', SetGoalController.finishGoal);
