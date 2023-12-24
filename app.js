@@ -18,7 +18,7 @@ app.use(morgan('tiny'));
 app.use('/goal', setGoalRouter);
 
 app.use((req, res, next) => {
-  console.log(req);
+  // console.log(req);
   res.sendStatus(404);
 });
 
