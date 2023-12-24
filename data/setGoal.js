@@ -15,6 +15,18 @@ export const getGoal = async () => {
 
 // SET goal=? WHERE id=1`, [goal]
 
+// await db.execute(`UPDATE goal SET goal=? WHERE id=1`, [goal]);
+// 목표 설정하기
+export const setGoal = async ({ id, goalName }) => {
+  await db.execute(`UPDATE goal SET goalName=? WHERE id=? LIMIT 1;`, [
+    goalName,
+    id,
+  ]);
+  return await db
+    .execute('SELECT * FROM goal WHERE id=?', [id])
+    .then((value) => value[0][0]);
+};
+
 // 다중쿼리 시도하기
 
 // return db

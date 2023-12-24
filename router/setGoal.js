@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/', SetGoalController.getGoal);
 
 // 목표 설정하기
-router.put('/name', SetGoalController.setGoal);
+router.patch('/name', SetGoalController.setGoal);
 
 // 참을인 횟수 올리기
 router.put('/endureNum', SetGoalController.addOneNum);
