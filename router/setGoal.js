@@ -20,6 +20,7 @@ router.post('/done', SetGoalController.finishGoal);
 // 완료리스트 get
 router.get('/list', SetGoalController.getGoalList);
 
-// 완료 리스트에 넣기
+// 목표 삭제하기
+router.delete('/delete', SetGoalController.delGoal);
 
 export default router;

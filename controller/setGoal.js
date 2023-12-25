@@ -131,3 +131,25 @@ export const getGoalList = async (req, res, next) => {
 
   res.status(200).json(currentGoalList);
 };
+
+// 목표 지우기
+export const delGoal = async (req, res, next) => {
+  // id가 안 온 경우
+
+  if (!req.body.id) {
+    res.status(400).json(`목표 설정하기 실패: id가 없음`);
+    return;
+  }
+
+  // id가 존재하지 않는 경우
+
+  const currentGoalList = await SetGoalRepository.getGoalList();
+  if (!currentGoalList.map((value) => value.id).includes(req.body?.id)) {
+    res.status(400).json(`존재하지 않는 id입니다`);
+    return;
+  }
+
+  await SetGoalRepository.delGoalById(req.body?.id);
+
+  res.status(200).json({ message: `목표 삭제 완료` });
+};

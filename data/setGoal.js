@@ -105,3 +105,9 @@ export const getGoalList = async () => {
 export const resetClickNum = async (id) => {
   return db.execute(`UPDATE goal SET endureNum=${0} WHERE id=?`, [id]);
 };
+
+// 목표 지우기 by id
+
+export const delGoalById = async (id) => {
+  return db.execute('DELETE FROM goal WHERE id=?', [id]);
+};
