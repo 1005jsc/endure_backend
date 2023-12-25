@@ -39,7 +39,7 @@ export const getGoal = async (req, res, next) => {
   }
 
   res.status(200).json({
-    currentGoal,
+    data: currentGoal,
     message,
   });
 };
@@ -68,7 +68,10 @@ export const setGoal = async (req, res, next) => {
     }
   } else {
     const goalNow = await SetGoalRepository.setGoal(req.body);
-    res.status(200).json(`목표 설정하기 성공: ${goalNow?.goalName}`);
+    res.status(200).json({
+      data: null,
+      message: `목표 설정하기 성공: ${goalNow?.goalName}`,
+    });
   }
   return;
 };
@@ -91,10 +94,17 @@ export const addOneNum = async (req, res, next) => {
 
   if (currentEndureNum.endureNum >= 500) {
     await SetGoalRepository.resetClickNum(req.body.id);
-    res.status(200).json({ message: '500이 넘어가서 리셋함' });
+    res.status(200).json({
+      data: null,
+
+      message: '500이 넘어가서 리셋함',
+    });
   } else {
     await SetGoalRepository.addOneEndureNum(req.body.id);
-    res.status(200).json({ message: '추가 완료' });
+    res.status(200).json({
+      data: null,
+      message: '추가 완료',
+    });
   }
 
   return;
@@ -122,14 +132,19 @@ export const finishGoal = async (req, res, next) => {
 
   await SetGoalRepository.submitNewGoal(req.body);
 
-  res.status(200).json(`목표 완료!, 그리고 새 목표 생성 `);
+  res.status(200).json({
+    data: null,
+    message: `목표 완료!, 그리고 새 목표 생성 `,
+  });
 };
 
 // 목표리스트 get(완료)
 export const getGoalList = async (req, res, next) => {
   const currentGoalList = await SetGoalRepository.getGoalList();
 
-  res.status(200).json(currentGoalList);
+  res
+    .status(200)
+    .json({ data: currentGoalList, message: '목표리스트 get해오기' });
 };
 
 // 목표 지우기
@@ -151,5 +166,8 @@ export const delGoal = async (req, res, next) => {
 
   await SetGoalRepository.delGoalById(req.body?.id);
 
-  res.status(200).json({ message: `목표 삭제 완료` });
+  res.status(200).json({
+    data: null,
+    message: `목표 삭제 완료`,
+  });
 };
