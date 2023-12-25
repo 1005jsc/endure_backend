@@ -14,6 +14,17 @@ export const getGoal = async () => {
     });
 };
 
+export const getGoalById = async (id) => {
+  // 가장 최신의 goal이 보이게끔 만들기
+
+  return db
+    .execute('SELECT * FROM goal WHERE id=?;', [id])
+
+    .then((value) => {
+      return value[0][0];
+    });
+};
+
 // SET goal=? WHERE id=1`, [goal]
 
 // await db.execute(`UPDATE goal SET goal=? WHERE id=1`, [goal]);
@@ -88,4 +99,9 @@ export const submitNewGoal = async () => {
 export const getGoalList = async () => {
   const yes = await db.execute('SELECT * FROM goal').then((value) => value[0]);
   return yes;
+};
+
+// 0으로 만들기
+export const resetClickNum = async (id) => {
+  return db.execute(`UPDATE goal SET endureNum=${0} WHERE id=?`, [id]);
 };
