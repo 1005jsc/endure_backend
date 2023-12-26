@@ -1,4 +1,5 @@
 import * as SetGoalRepository from '../data/setGoal.js';
+import { toStringByFormatting } from '../util/date/date.js';
 
 // 목표 get (완료)
 export const getGoal = async (req, res, next) => {
@@ -142,9 +143,19 @@ export const finishGoal = async (req, res, next) => {
 export const getGoalList = async (req, res, next) => {
   const currentGoalList = await SetGoalRepository.getGoalList();
 
+  // 날짜 바꿔주기
+
+  const convertedGoalList = currentGoalList.map((value) => {
+    return {
+      ...value,
+      createdDate: toStringByFormatting(value.createdDate),
+      doneDate: toStringByFormatting(value.doneDate),
+    };
+  });
+
   res
     .status(200)
-    .json({ data: currentGoalList, message: '목표리스트 get해오기' });
+    .json({ data: convertedGoalList, message: '목표리스트 get해오기' });
 };
 
 // 목표 지우기

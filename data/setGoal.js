@@ -1,5 +1,8 @@
 import { db } from '../db/database.js';
-import { convertJsDateToMysqlDatetime } from '../util/date/date.js';
+import {
+  convertJsDateToMysqlDatetime,
+  convertJsDateToMysqlDatetime3,
+} from '../util/date/date.js';
 
 // SELECT id, goalName, createdDate, done, endureNum FROM goal
 
@@ -88,7 +91,7 @@ export const submitNewGoal = async () => {
 
   await db.execute(
     `INSERT INTO goal (goalName, createdDate, done, endureNum) VALUES(?,?,?,?)`,
-    [null, convertJsDateToMysqlDatetime(), 0, 0]
+    [null, convertJsDateToMysqlDatetime3(), 0, 0]
   );
   const yes = await db.execute('SELECT * FROM goal').then((value) => value[0]);
   return yes;
@@ -97,7 +100,9 @@ export const submitNewGoal = async () => {
 // 목표리스트 get
 
 export const getGoalList = async () => {
-  const yes = await db.execute('SELECT * FROM goal').then((value) => value[0]);
+  const yes = await db
+    .execute('SELECT * FROM goal ORDER BY createdDate DESC')
+    .then((value) => value[0]);
   return yes;
 };
 
