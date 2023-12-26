@@ -89,24 +89,26 @@ export const addOneNum = async (req, res, next) => {
     return;
   }
 
-  const currentEndureNum = await SetGoalRepository.getGoalById(req.body.id);
+  const currentEndureNum = await SetGoalRepository.getGoalById(
+    req.body.id
+  ).then(() => {
+    if (currentEndureNum.endureNum >= 500) {
+      SetGoalRepository.resetClickNum(req.body.id);
+      res.status(200).json({
+        data: null,
+
+        message: '500이 넘어가서 리셋함',
+      });
+    } else {
+      SetGoalRepository.addOneEndureNum(req.body.id);
+      res.status(200).json({
+        data: null,
+        message: '추가 완료',
+      });
+    }
+  });
 
   // 500이상일 경우에는 0으로 돌려보내기
-
-  if (currentEndureNum.endureNum >= 500) {
-    await SetGoalRepository.resetClickNum(req.body.id);
-    res.status(200).json({
-      data: null,
-
-      message: '500이 넘어가서 리셋함',
-    });
-  } else {
-    await SetGoalRepository.addOneEndureNum(req.body.id);
-    res.status(200).json({
-      data: null,
-      message: '추가 완료',
-    });
-  }
 
   return;
 };
@@ -129,9 +131,9 @@ export const finishGoal = async (req, res, next) => {
     return;
   }
 
-  await SetGoalRepository.setDone(req.body?.id, req.body?.doneDate);
-
-  await SetGoalRepository.submitNewGoal(req.body);
+  await SetGoalRepository.setDone(req.body?.id, req.body?.doneDate).then(() => {
+    SetGoalRepository.submitNewGoal(req.body);
+  });
 
   res.status(200).json({
     data: null,

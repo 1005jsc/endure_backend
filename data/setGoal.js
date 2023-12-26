@@ -89,7 +89,7 @@ export const submitNewGoal = async () => {
   // goalName, createdDate, endureNum 받아오기
 
   await db.execute(
-    `INSERT INTO goal (goalName, createdDate,  endureNum) VALUES(?,?,?,?)`,
+    `INSERT INTO goal (goalName, createdDate,  endureNum) VALUES(?,?,?)`,
     [null, convertJsDateToMysqlDatetime3(), 0]
   );
   const yes = await db.execute('SELECT * FROM goal').then((value) => value[0]);
