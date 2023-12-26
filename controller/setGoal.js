@@ -84,7 +84,7 @@ export const addOneNum = async (req, res, next) => {
     return;
   }
   const currentGoalList = await SetGoalRepository.getGoalList();
-  if (currentGoalList.find((value) => value.id === req.body.id).done !== 0) {
+  if (!!currentGoalList.find((value) => value.id === req.body.id).doneDate) {
     res.status(400).json(`이미 완료된 id입니다`);
     return;
   }
@@ -124,7 +124,7 @@ export const finishGoal = async (req, res, next) => {
     return;
   }
 
-  if (currentGoalList.find((value) => value.id === req.body.id).done !== 0) {
+  if (!!currentGoalList.find((value) => value.id === req.body.id).doneDate) {
     res.status(400).json(`id ${req.body.id}는 이미 완료된 목표입니다`);
     return;
   }

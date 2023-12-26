@@ -4,7 +4,7 @@ import {
   convertJsDateToMysqlDatetime3,
 } from '../util/date/date.js';
 
-// SELECT id, goalName, createdDate, done, endureNum FROM goal
+// SELECT id, goalName, createdDate,  endureNum FROM goal
 
 export const getGoal = async () => {
   // 가장 최신의 goal이 보이게끔 만들기
@@ -79,7 +79,6 @@ export const addOneEndureNum = async (id) => {
 };
 
 export const setDone = async (id, doneDate) => {
-  await db.execute(`UPDATE goal SET done=1 WHERE id=?`, [id]);
   return await db.execute(`UPDATE goal SET doneDate=? WHERE id=?`, [
     doneDate,
     id,
@@ -87,11 +86,11 @@ export const setDone = async (id, doneDate) => {
 };
 
 export const submitNewGoal = async () => {
-  // goalName, createdDate, done, endureNum 받아오기
+  // goalName, createdDate, endureNum 받아오기
 
   await db.execute(
-    `INSERT INTO goal (goalName, createdDate, done, endureNum) VALUES(?,?,?,?)`,
-    [null, convertJsDateToMysqlDatetime3(), 0, 0]
+    `INSERT INTO goal (goalName, createdDate,  endureNum) VALUES(?,?,?,?)`,
+    [null, convertJsDateToMysqlDatetime3(), 0]
   );
   const yes = await db.execute('SELECT * FROM goal').then((value) => value[0]);
   return yes;
