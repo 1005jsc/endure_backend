@@ -31,4 +31,6 @@ app.use((error, req, res, next) => {
 db.getConnection(); //
 // .then(console.log);
 
-const server = app.listen(config.host.port);
+const server = app.listen(config.host.port, () => {
+  console.log(`서버가 ${config.host.port}로 시작되었습니다`);
+});

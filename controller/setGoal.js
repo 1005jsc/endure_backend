@@ -48,7 +48,7 @@ export const getGoal = async (req, res, next) => {
 // 목표 설정하기 (완료)
 
 export const setGoal = async (req, res, next) => {
-  if (!req.body.id || !req.body?.goalName) {
+  if (!req.body.id) {
     res
       .status(400)
       .json(`목표 설정하기 실패: request로 보내는 값의 양식을 확인하시오`);
@@ -57,16 +57,8 @@ export const setGoal = async (req, res, next) => {
 
   const currentGoalList = await SetGoalRepository.getGoalList();
 
-  if (
-    currentGoalList
-      .filter((value) => value.id !== req.body?.id)
-      .find((value) => value.goalName == req.body?.goalName)
-  ) {
-    if (currentGoalList.find((value) => value.id === req.body?.id)) {
-      res.status(400).json(`목표 설정하기 실패: 같은 이름의 목표가 이미 있음`);
-    } else {
-      res.status(400).json(`목표 설정하기 실패: 존재하지 않는 id임`);
-    }
+  if (!currentGoalList.map((value) => value.id).includes(req.body?.id)) {
+    res.status(400).json(`목표 설정하기 실패: 존재하지 않는 id임`);
   } else {
     const goalNow = await SetGoalRepository.setGoal(req.body);
     res.status(200).json({
@@ -89,14 +81,11 @@ export const addOneNum = async (req, res, next) => {
     return;
   }
 
-  const currentEndureNum = await SetGoalRepository.getGoalById(
-    req.body.id
-  ).then(() => {
+  await SetGoalRepository.getGoalById(req.body.id).then((currentEndureNum) => {
     if (currentEndureNum.endureNum >= 500) {
       SetGoalRepository.resetClickNum(req.body.id);
       res.status(200).json({
         data: null,
-
         message: '500이 넘어가서 리셋함',
       });
     } else {
