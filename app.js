@@ -8,6 +8,12 @@ import setGoalRouter from './router/setGoal.js';
 import { config } from './config.js';
 import { db } from './db/database.js';
 
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const app = express();
 
 app.use(express.json());
@@ -16,6 +22,18 @@ app.use(cors());
 app.use(morgan('tiny'));
 
 app.use('/goal', setGoalRouter);
+
+app.get('/', (req, res) => {
+  // 적절한 HTML 파일 읽어서 보내기
+  console.log();
+
+  // res.sendFile(
+  //   '/Users/jaesincho/Desktop/coding/projects/endure/backend/index.html'
+  // );
+
+  const indexPath = join(__dirname, 'index.html');
+  res.sendFile(indexPath);
+});
 
 app.use((req, res, next) => {
   // console.log(req);
