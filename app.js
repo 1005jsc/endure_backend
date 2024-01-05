@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 
 import setGoalRouter from './router/setGoal.js';
+import setCertbotRouter from './router/certbot.js';
 import { config } from './config.js';
 import { db } from './db/database.js';
 
@@ -22,6 +23,7 @@ app.use(cors());
 app.use(morgan('tiny'));
 
 app.use('/goal', setGoalRouter);
+app.use('/.well-known', setCertbotRouter);
 
 app.get('/', (req, res) => {
   // 적절한 HTML 파일 읽어서 보내기
